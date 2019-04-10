@@ -1,0 +1,20 @@
+@mixin fontsize($fz) {
+    font-size: $fz / 2;
+    @for $i from 2 through 3 {
+        @media (min-resolution: $i#{'dppx'}) {
+            font-size: $fz * $i / 2;
+        }
+    }
+}
+
+@mixin img-dpr($img) {
+    background: url($img + '@2x.png') no-repeat;
+    background-size: 100% 100%;
+
+    
+    @media (resolution: 3dppx) {
+        background: url($img + '@3x.png') no-repeat;
+        background-size: 100% 100%;
+    }
+        
+}

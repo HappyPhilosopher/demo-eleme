@@ -51,6 +51,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import './common/styles/index.scss';
+
 .tab {
   display: flex;
   align-items: center;
@@ -60,8 +62,15 @@ export default {
 
   .tab-item {
     flex: 1;
-    text-align: center;
-    font-size: 0.28rem;
+
+    a {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      // @include fontsize(28px);
+      font-size: 0.28rem;
+    }
 
     .router-link-active {
       color: rgb(240, 20, 20);

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>sell</title>
     <link rel="stylesheet" href="./static/css/reset.css">
-    <script>
+    <!-- <script>
       ! function(e) {
           function t(a) {
               if (i[a]) return i[a].exports;
@@ -41,6 +41,17 @@
           }, e.exports = t["default"]
       }]);
       flex(100, 1); 
+    </script> -->
+    <script src="./static/js/mc-ratio.min.js"></script>
+    <script>
+      window.onload = function() {
+        fekit.mcRatio({
+          size: [750, 1334],
+          full: !0,
+          dpr: !0,
+          fixed: 0
+        });
+      };
     </script>
   </head>
   <body>
