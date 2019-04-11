@@ -11,10 +11,17 @@
     background: url($img + '@2x.png') no-repeat;
     background-size: 100% 100%;
 
-    
     @media (resolution: 3dppx) {
         background: url($img + '@3x.png') no-repeat;
         background-size: 100% 100%;
-    }
-        
+    }   
+}
+
+.clearfix::after {
+    content: ".";
+    display: block;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    clear: both;
 }
