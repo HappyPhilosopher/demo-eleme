@@ -12,7 +12,7 @@
 				<div class="description">
 					{{ seller.description }}/{{ seller.deliveryTime }}分钟送达
 				</div>
-				<div v-if="seller.supports" class="support">
+				<div v-if="seller.supports" :class="supports">
 					<i></i>
 					<span>{{ seller.supports[0].description }}</span>
 				</div>
@@ -26,10 +26,14 @@
 export default {
 	props: ['seller'],
   data() {
-		return {};
+		return {
+      supports: []
+    };
   },
   methods: {},
-  created() {}
+  created() {
+    
+  }
 };
 </script>
 
