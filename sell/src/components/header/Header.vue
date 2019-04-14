@@ -1,9 +1,11 @@
 <template>
   <div class="header">
     <div class="content-wrapper">
+      <!-- 商家头像 -->
       <div class="avatar">
         <img :src="seller.avatar" alt="头像" />
       </div>
+      <!-- 商家内容 -->
       <div class="content">
         <div class="title">
           <span class="brand"></span>
@@ -16,36 +18,65 @@
           <i :class="supportsIconClassList[seller.supports[0].type]"></i>
           <span>{{ seller.supports[0].description }}</span>
         </div>
-        <div class="supports-count">
+        <div class="supports-count" @click="showDetails()">
           <span v-if="seller.supports" class="count">{{ seller.supports.length }}个</span>
-          <span class="icon-keyboard_arrow_right" @click="showDetails()"></span>
+          <span class="icon-keyboard_arrow_right"></span>
         </div>
       </div>
     </div>
-    <div class="bulletin-wrapper">
+    <!-- 商家公告 -->
+    <div class="bulletin-wrapper" @click="showDetails()">
       <span class="bulletin-title"></span>
       <span class="bulletin-text">{{ seller.bulletin }}</span>
-      <i class="icon-keyboard_arrow_right" @click="showDetails()"></i>
+      <i class="icon-keyboard_arrow_right"></i>
     </div>
+    <!-- 背景 -->
     <div class="header-background">
       <img :src="seller.avatar" alt="背景图" width="100%" height="100%">
     </div>
-    <div class="detail" v-show="detailShow">
-      <div class="detail-wrapper">
-        <div class="detail-main">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam quos cum itaque blanditiis rem fugit, voluptates sunt praesentium quae a, deserunt nostrum. Officiis unde labore perferendis vitae! Animi, et. Blanditiis quia quaerat hic quasi totam, optio dicta temporibus delectus quam? Quis molestiae, suscipit doloribus ea, ad inventore possimus non culpa ratione id mollitia vel? Rerum qui velit officia. Fuga et, sapiente quam eos quibusdam quas sit inventore voluptas officia unde aliquam amet reprehenderit. Architecto aut obcaecati sit ut necessitatibus nisi quasi illum porro odio consequatur, quos, ullam, omnis vero autem ratione ipsa natus quia possimus quaerat voluptate esse quod enim! Labore accusamus dolorem qui alias dignissimos recusandae aspernatur nobis suscipit, facere, cupiditate adipisci laudantium amet libero! Ipsum aliq
+    <!-- 商家详情 -->
+    <transition name="showDetail">
+      <div class="detail" v-show="detailShow">
+        <div class="detail-wrapper">
+          <div class="detail-main">
+            <h2>{{ seller.name }}</h2>
+            <div class="star-wrapper">
+              <Star :size="48" :score="seller.score"/>
+            </div>
+            <h3>
+              <i></i>
+              <span>优惠信息</span>
+              <i></i>
+            </h3>
+            <ul class="supports" v-if="seller.supports">
+              <li v-for="(item, index) in seller.supports" :key="index" class="support-item">
+                <i :class="supportsIconClassList[index]"></i>
+                <span>{{ item.description }}</span>
+              </li>
+            </ul>
+            <h3>
+              <i></i>
+              <span>商家公告</span>
+              <i></i>
+            </h3>
+            <div class="bulletin">
+              <p>{{ seller.bulletin }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="detail-close" @click="hideDetails()">
+          <i class="icon-close"></i>
         </div>
       </div>
-      <div class="detail-close" @click="hideDetails()">
-        <i class="icon-close"></i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 
 <script>
+import Star from '../star/Star';
+
 export default {
-  props: ["seller"],
+  props: ['seller'],
   data() {
     return {
       supportsIconClassList: [],
@@ -61,7 +92,11 @@ export default {
     }
   },
   created() {
+    // 小技巧：为 icon 动态添加类名，根据不同类名显示不同图标
     this.supportsIconClassList = ['decrease', 'discount', 'guarantee', 'invoice', 'special'];
+  },
+  components: {
+    Star
   }
 };
 </script>
@@ -80,6 +115,7 @@ export default {
     display: flex;
     padding: 0.48rem 0.24rem 0.36rem 0.48rem;
 
+    /* 商家头像 */
     .avatar {
       width: 1.28rem;
       height: 1.28rem;
@@ -91,6 +127,7 @@ export default {
       }
     }
 
+    /* 商家内容 */
     .content {
       padding-top: 0.04rem;
       margin-left: 0.32rem;
@@ -169,6 +206,7 @@ export default {
     }
   }
 
+  /* 商家公告 */
   .bulletin-wrapper {
     position: relative;
     width: 100%;
@@ -206,6 +244,7 @@ export default {
     }
   }
 
+  /* header 背景图 */
   .header-background {
     position: absolute;
     top: 0;
@@ -217,6 +256,17 @@ export default {
     z-index: -1;
   }
 
+  /* 显示、隐藏详细内容过渡动画 */
+  .showDetail-enter,
+  .showDetail-leave-to {
+    opacity: 0;
+  }
+  .showDetail-enter-active,
+  .showDetail-leave-active {
+    transition: all 0.5s ease;
+  }
+
+  /* 商家详情 */
   .detail {
     position: fixed;
     top: 0;
@@ -226,6 +276,7 @@ export default {
     display: flex;
     flex-direction: column;
     background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);  // 该属性为实验性属性，大多数浏览器不支持
     z-index: 100;
 
     .detail-wrapper {
@@ -236,6 +287,91 @@ export default {
 
       .detail-main {
         margin-top: 1.28rem;
+        padding: 0 0.72rem;
+
+        h2 {
+          font-size: 0.32rem;
+          line-height: 0.32rem;
+          text-align: center;
+          font-weight: 700;
+        }
+
+        .star-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 0.48rem;
+          margin-top: 0.32rem;
+        }
+
+        h3 {
+          display: flex;
+          align-items: center;
+          margin-top: 0.56rem;
+
+          i {
+            flex: 1;
+            display: block;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.2);
+          }
+
+          span {
+            padding: 0 0.24rem;
+            font-size: 0.28rem;
+            font-weight: 700;
+            color: #fff;
+          }
+        }
+
+        .supports {
+          margin-top: 0.48rem;
+          padding: 0 0.24rem;
+
+          .support-item {
+            display: flex;
+            align-items: center;
+            margin-top: 0.24rem;
+
+            &:nth-child(1) {
+              margin-top: 0;
+            }
+
+            i {
+              display: block;
+              width: 0.32rem;
+              height: 0.32rem;
+              margin-right: 0.12rem;
+              
+              &.decrease {
+                @include img-dpr('./images/decrease_2');
+              }
+              &.discount {
+                @include img-dpr('./images/discount_2');
+              }
+              &.guarantee {
+                @include img-dpr('./images/guarantee_2');
+              }
+              &.invoice {
+                @include img-dpr('./images/invoice_2');
+              }
+              &.special {
+                @include img-dpr('./images/special_2');
+              }
+            }
+
+            span {
+              font-size: 0.24rem;
+            }
+          }
+        }
+
+        .bulletin {
+          margin-top: 0.48rem;
+          padding: 0 0.24rem;
+          font-size: 0.24rem;
+          line-height: 0.48rem;
+        }
       }
     }
 
