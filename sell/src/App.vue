@@ -21,6 +21,9 @@
 import Header from './components/header/Header';
 import Axios from 'axios';
 
+/* 定义常量-错误码 */
+const ERR_NO = 0;
+
 export default {
   name: 'App',
   components: {
@@ -37,12 +40,14 @@ export default {
      * @param {String} 请求地址
      */
     async getSeller(url) {
-        let response = await Axios.get(url);
-        let data = await response.data;
-        if (data.errno === 0) {
+      try {
+        let {data} = await Axios.get('/api/seller');
+        if (data.errno === ERR_NO) {
             this.seller = data.data
         }
-        console.log(this.seller);
+      } catch (error) {
+        console.log('获取数据失败!' + error);
+      }
     }
   },
   created() {

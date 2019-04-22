@@ -79,7 +79,7 @@ export default {
   props: ['seller'],
   data() {
     return {
-      supportsIconClassList: [],
+      // supportsIconClassList: [],
       detailShow: false
     };
   },
